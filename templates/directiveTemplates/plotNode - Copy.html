@@ -1,0 +1,49 @@
+<ion-item ng-repeat="id in plotTree[parentId].children" ng-init="index=findByProperty(plotTree, 'id', id)" class="no-padding no-right-padding">
+	<!--<div class="item row no-border">
+		<div class="col no-padding">
+			<button ui-sref="tabsController.oneSentenceDescriptionBuilder" id="plotBuilder-button8" class="button button-light no-padding pull-right icon ion-wrench"></button>
+		</div>
+	</div>-->
+	<div class="item row no-border">
+		<div class="col">
+			{{plotTree[index].title}}
+			<i class='icon ion-chevron-down pull-right' ng-hide="index==0"  ng-click="toggleLevel(id)"></i>
+		</div>
+	</div>
+	<div class="item row no-border">
+		<div class="col">
+			<form class="list">
+				<label class="item item-input">
+					<textarea elastic type="text" placeholder=""></textarea>
+				</label>
+			</form>
+		</div>
+	</div>
+	
+	<div ng-repeat="childId in plotTree[index].children" ng-init="childIndex=findByProperty(plotTree, 'id', childId)">
+		<plot-child-node ng-repeat='node in children' node='node'></plot-child-node>
+		
+		<ion-item ng-if="openLevels.indexOf(childId)==-1" class="no-padding no-right-padding">
+			<!--<div class="item row no-border">
+				<div class="col no-padding">
+					<button ui-sref="tabsController.oneSentenceDescriptionBuilder" id="plotBuilder-button8" class="button button-light no-padding pull-right icon ion-wrench"></button>
+				</div>
+			</div>-->
+			<div class="item row no-border">
+				<div class="col">
+					{{plotTree[childIndex].title}}
+					<i class='icon ion-chevron-right pull-right' ng-click="toggleLevel(childId)"></i>
+				</div>
+			</div>
+			<div class="item row no-border">
+				<div class="col">
+					<form class="list">
+						<label class="item item-input">
+							<textarea elastic type="text" placeholder=""></textarea>
+						</label>
+					</form>
+				</div>
+			</div>
+		</ion-item>
+	</div>
+</ion-item>

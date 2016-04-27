@@ -1,0 +1,34 @@
+<ion-view title="World Builder" id="page5">
+	
+	<ion-nav-buttons side="left">
+		<home-button></home-button>
+	</ion-nav-buttons>
+
+    <ion-content padding="true" class="has-header">
+		<!-- add `multiple` attribute to allow multiple sections to open at once -->
+		<v-accordion class="vAccordion--default" multiple>
+
+		<!-- add expanded attribute to open the section -->
+		<v-pane expanded>
+		  <v-pane-header>
+			Pane header #1
+		  </v-pane-header>
+
+		  <v-pane-content>
+			Pane content #1
+		  </v-pane-content>
+		</v-pane>
+
+		<v-pane disabled>
+		  <v-pane-header>
+			Pane header #2
+		  </v-pane-header>
+
+		  <v-pane-content>
+			Pane content #2
+		  </v-pane-content>
+		</v-pane>
+
+		</v-accordion>
+	</ion-content>
+</ion-view>

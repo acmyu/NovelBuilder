@@ -1,0 +1,98 @@
+<ion-view title="{{novel.title}}" id="page2">
+
+	<ion-nav-buttons side="left">
+		<home-button></home-button>
+	</ion-nav-buttons>
+	<ion-nav-buttons side="right">
+		<done-button></done-button>
+		<edit-button></edit-button>
+	</ion-nav-buttons>
+	
+    <ion-content padding="true" class="has-header">
+		<input type="text" id="titleEdit" class="page-heading input-border full-width"
+			ng-model="editedTitle" 
+			ng-init="editedTitle=novel.title"
+			ng-change="editNovelText(editedTitle, 'title')"
+			ng-show="editMode">
+		<h2 id="novel-heading1" class="page-heading full-width" style="color:#000000;"  ng-hide="editMode">{{novel.title}}</h2>
+        <div class="item row no-border">
+			<div class="col">
+				<img src="{{novel.cover}}" width="100%" height="auto" style="display:block;">
+			</div>
+			<div class="col ">	
+				<div class="large-body-text">
+					Genre
+				</div>
+				<div ng-repeat="genre in novel.genres">
+					<div class="item row no-border body-text">
+						<div class="col">
+							<div class="body-text" ng-hide="editMode">{{genre}}</div>
+							<select class="full-width body-text"
+								ng-show="editMode" 
+								ng-model="selectedGenre" 
+								ng-init="selectedGenre=genre" 
+								ng-change="selectGenre(selectedGenre, genre)">
+									<option ng-repeat="genreOption in genreOptions" 
+									ng-if="novel.genres.indexOf(genreOption)==-1 || genreOption==genre">{{genreOption}}</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+        </div>
+        <div id="novel-markdown2" style="color:#000000;">
+			<textarea elastic type="text" style="height: 50px;" id="synopsisEdit" class="body-text margins input-border full-width"  
+				ng-model="editedSynopsis" 
+				ng-init="editedSynopsis=novel.synopsis"
+				ng-change="editNovelText(editedSynopsis, 'synopsis')"
+				ng-show="editMode"></textarea>
+            <p id="synopsisDisplay" class="body-text margins full-width" ng-bind-html="toHtml(novel.synopsis)" ng-hide="editMode"></p>
+        </div>
+        <div class="item row no-border">
+			<div class="col">
+				<h3 id="novel-heading4" class="section-heading" style="color:#000000;">Chapters</h3>
+			</div>
+			<div class="col no-padding">
+				<button id='button-select' class='button button-clear no-transition no-padding pull-right' ng-click='selectMode()' >Select</button>
+				<button id='button-addChapter' class='button button-clear no-transition no-padding pull-right icon ion-plus' ng-click='addChapter()' ></button>
+			</div>
+		</div>
+        <ion-list show-reorder="showReorder">
+			<ion-item ng-repeat="chapter in novel.chapters" item="chapter" href="#/tabsController/chapter/{{chapter.id}}" class="no-right-padding">
+				{{ chapter.title }}
+				
+				<i class='icon ion-chevron-right pull-right'></i>
+				
+				<ion-option-button class="button-assertive" ng-click="onChapterDelete(chapter)">Delete</ion-option-button>
+
+				<ion-reorder-button class="ion-navicon" on-reorder="moveChapter(chapter, $fromIndex, $toIndex)"></ion-reorder-button>
+			</ion-item>
+        </ion-list>
+        <h3 id="novel-heading3" class="section-heading" style="color:#000000;">Progress</h3>
+        <div>
+            <img src="img/QVQgi32Soq0Wvy81sUAj_graph.png" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
+        </div>
+        <h3 id="novel-heading5" class="section-heading" style="color:#000000;">Stats</h3>
+        <ion-list>
+            <ion-item>Words
+				<p class="pull-right">{{novel.wordCount}}</p>
+			</ion-item>
+            <ion-item>Chapters
+				<p class="pull-right">{{novel.chapterCount}}</p>
+			</ion-item>
+			<ion-item>Sentence Variation
+				<p class="pull-right">{{novel.sentenceVariation}}</p>
+			</ion-item>
+            <ion-item>Words per Sentence
+				<p class="pull-right">{{novel.wordsPerSentence}}</p>
+			</ion-item>
+			<ion-item>Words per Paragraph
+				<p class="pull-right">{{novel.wordsPerParagraph}}</p>
+			</ion-item>
+			<ion-item>Words per Chapter
+				<p class="pull-right">{{novel.wordsPerChapter}}</p>
+			</ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

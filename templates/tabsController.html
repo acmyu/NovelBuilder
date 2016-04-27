@@ -1,0 +1,16 @@
+<ion-view title="Tabs Controller" id="page1">
+    <ion-tabs ng-class="{'tabs-item-hide': hideTabs}" class="tabs-stable tabs-icon-top">
+        <ion-tab title="Novel" icon="ion-android-bulb" href="#/tabsController/novel">
+            <ion-nav-view name="tab2"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="Plot" icon="ion-ios-snowy" href="#/tabsController/plotBuilder">
+            <ion-nav-view name="tab3"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="Character" icon="ion-ios-body" href="#/tabsController/characterBuilder">
+            <ion-nav-view name="tab1"></ion-nav-view>
+        </ion-tab>
+        <ion-tab title="World" icon="ion-earth" href="#/tabsController/worldBuilder">
+            <ion-nav-view name="tab4"></ion-nav-view>
+        </ion-tab>
+    </ion-tabs>
+</ion-view>

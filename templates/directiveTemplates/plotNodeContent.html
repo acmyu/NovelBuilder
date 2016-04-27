@@ -1,0 +1,17 @@
+<div class="item row no-border large-body-text">
+	<div class="col">
+		{{node.title}}
+		&nbsp;
+		<i class='icon ion-edit' ui-sref='tabsController.plotNodeEdit({nodeId: node.id})' 
+			onClick="if(event.stopPropagation){event.stopPropagation();}event.cancelBubble=true;">
+		</i>
+		
+		<i class='icon ion-chevron-down pull-right' ng-show="$pane.isExpanded()"></i>
+		<i class='icon ion-chevron-right pull-right' ng-hide="$pane.isExpanded() || node.children.length==0"></i>
+	</div>
+</div>
+<div class="item row no-border body-text">
+	<div class="col">
+		{{node.bodyHtml}}
+	</div>
+</div>

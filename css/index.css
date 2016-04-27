@@ -1,0 +1,113 @@
+.no-right-padding .item-content{
+	padding-right: 15px;
+}
+
+.no-border{
+	padding: 0px;
+	border: 0;
+}
+
+.pull-right{
+	float: right;
+	text-align: right;
+}
+
+.pull-left{
+	float: left;
+	text-align: left;
+}
+
+.centered{
+	text-align: center;
+}
+
+.no-transition{
+	transition: none;
+}
+
+.full-width{
+	width: 100%;
+}
+
+.superfill {
+  height: 100%;
+}
+
+textarea {
+    resize: none;
+}
+
+.page-heading {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+	font-size:24px !important;
+}
+
+.section-heading {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+	font-size:20px !important;
+}
+
+.large-body-text {
+	color: #444 !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-weight: bold;
+	font-size:17px !important;
+	white-space: normal;
+}
+
+.body-text {
+	color: #444 !important;
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size:16px !important;
+	white-space: normal;
+}
+
+.margins {
+	margin-top: 10px !important;
+	margin-bottom: 10px !important;
+}
+
+.no-padding {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
+}
+
+.button-clear {
+	border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #444;
+    font-size: 17px;
+	font-weight: 300;
+}
+
+.input-border {
+	border-color: #ddd !important;
+	border-width: 1px !important;
+    border-style: solid !important;
+	padding: 5px  !important;
+}
+
+v-accordion {
+	margin-top: 0px;
+}
+
+v-pane-header {
+	margin-bottom: 0px !important;
+	border-bottom: 0px !important;
+}
+
+v-pane[disabled] > v-pane-header {
+	opacity: 1 !important; }

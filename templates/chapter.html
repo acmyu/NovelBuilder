@@ -1,0 +1,28 @@
+<ion-view title="{{chapter.title}}" id="page7">
+	
+    <ion-content scroll="false" padding="true" class="has-header superfill">
+        <form class="list superfill">
+            <label class="item item-input">
+                <input type="text" placeholder="Title"
+					id="chapterTitleEdit" 
+					ng-model="editedChapterTitle" 
+					ng-init="editedChapterTitle=chapter.title"
+					ng-change="editChapterText(editedChapterTitle, 'title')">
+            </label>
+			<label class="item item-input" style="height: 75%;">
+
+				<!--<div contenteditable class="richTextArea" style="height: 100%; width:100%;" id="displayChapterBody" ng-bind-html="chapter.body"></div>-->
+			
+                <textarea style="height: 100%; border:0;" placeholder="Write something awesome!"
+					id="chapterBodyEdit" 
+					ng-model="editedChapterBody"
+					ng-init="editedChapterBody=chapter.body"
+					ng-change="editChapterBody(editedChapterBody)">
+				</textarea>
+
+            </label>
+
+        </form>
+		
+    </ion-content>
+</ion-view>

@@ -1,0 +1,25 @@
+<ion-view title="{{plotNode.title}}" id="page7">
+	<ion-nav-buttons side="right">
+		<button class='button button-clear pull-right' ui-sref='tabsController.oneSentenceDescriptionBuilder' > <i class='icon ion-wrench'></i> </button>
+	</ion-nav-buttons>
+	
+    <ion-content scroll="false" padding="true" class="has-header">
+        <form class="list">
+            <label class="item item-input">
+                <input type="text" placeholder="Title"
+					id="chapterPlotNodeEdit" 
+					ng-model="editedPlotNodeTitle" 
+					ng-init="editedPlotNodeTitle=plotNode.title"
+					ng-change="editPlotNodeText(editedPlotNodeTitle, 'title')">
+            </label>
+				<textarea elastic type="text" style="height: 50px;" placeholder="Write something awesome!" class="body-text input-border full-width"
+					id="plotNodeBodyEdit" 
+					ng-model="editedPlotNodeBody"
+					ng-init="editedPlotNodeBody=plotNode.body"
+					ng-change="editPlotNodeBody(editedPlotNodeBody)">
+				</textarea>
+
+        </form>
+		
+    </ion-content>
+</ion-view>
