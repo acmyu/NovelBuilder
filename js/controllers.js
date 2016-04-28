@@ -1,160 +1,14 @@
 angular.module('app.controllers', ['ionic', 'ui.router'])
 
 
-.controller('mainCtrl', ['$scope', '$state', function($scope, $state) {	
-	$scope.toHtml = function(str) {
-		str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
-		return str;
-	}
-	
+.controller('mainCtrl', ['$scope', '$state', 'novelData', 'flattenedPlotTreeData', function($scope, $state, novelData, flattenedPlotTreeData) {		
+	$scope.novelId = 0;
 
-	$scope.initNovelData = function(novelId) {
-		$scope.novel = {
-			title: "My Novel",
-			cover: "img/alicecover.jpg",
-			genres: ["Fantasy", "Adventure"],
-			synopsis: "Synopsis goes here.",
-			wordCount: 123,
-			chapterCount: 4,
-			sentenceVariation: 4.34,
-			wordsPerSentence: 12.34,
-			wordsPerParagraph: 120.34,
-			wordsPerChapter: 1234.56,
-			chapters: [
-				{
-					id: 0,
-					title: 'foo2',
-					attr: [ 'boo', 'zoo' ]
-				},
-				{
-					id: 1,
-					title: 'foo3',
-					attr: [ 'boo', 'zoo' ]
-				},
-				{
-					id: 2,
-					title: 'foo4',
-					attr: [ 'boo', 'zoo' ]
-				},
-				{
-					id: 3,
-					title: 'bar',
-					attr: [ 'far', 'zar' ]
-				}
-			]
-		};
-		
-		$scope.flattenedPlotTree = [
-			{
-				id: 0,
-				parentId: -1,
-				level: 0,
-				showReorder: false,
-				type: "oneSentence",
-				title: "One Sentence Description",
-				body: "This is a one sentence description.",
-				childrenId: [1, 2]
-			},
-			{
-				id: 1,
-				parentId: 0,
-				level: 1,
-				showReorder: false,
-				type: "conflict",
-				title: "Conflict 1",
-				body: "This is the first conflict and resolution.",
-				childrenId: [3]
-			},
-			{
-				id: 2,
-				parentId: 0,
-				level: 1,
-				showReorder: false,
-				type: "conflict",
-				title: "Conflict 2",
-				body: "This is the second conflict and resolution.",
-				childrenId: []
-			},
-			{
-				id: 3,
-				parentId: 1,
-				level: 2,
-				showReorder: false,
-				type: "conflict",
-				title: "Scene 1",
-				body: "This is the first scene in the first conflict and resolution.",
-				childrenId: []
-			}
-		];
-		
-		
-		
-		$scope.plotTree = {
-			id: -1,
-			level: -1,
-			children: [
-				{	id: 0,
-					parentId: -1,
-					parentNode: 0,
-					level: 0,
-					showReorder: false,
-					type: "oneSentence",
-					title: "One Sentence Description",
-					body: "This is a one sentence description.",
-					childrenId: [1, 2],
-					children: [
-						{	id: 1,
-							parentId: 0,
-							parentNode: 0,
-							level: 1,
-							showReorder: false,
-							type: "conflict",
-							title: "Conflict 1",
-							body: "This is the first conflict and resolution.",
-							childrenId: [3],
-							children: [
-								{	id: 3,
-									parentId: 1,
-									parentNode: 0,
-									level: 2,
-									showReorder: false,
-									type: "conflict",
-									title: "Scene 1",
-									body: "This is the first scene in the first conflict and resolution.",
-									childrenId: [],
-									children: []
-								}
-							]
-						},
-						{	id: 2,
-							parentId: 0,
-							parentNode: 0,
-							level: 1,
-							showReorder: false,
-							type: "conflict",
-							title: "Conflict 2",
-							body: "This is the second conflict and resolution.",
-							childrenId: [],
-							children: []
-						}
-					]
-				}
-			]
-		};
-		
-		$scope.initPlotTree = function(node) {
-			var i;
-			for(i=0; i<node.children.length; i++) {
-				node.children[i].bodyHtml = $scope.toHtml(node.children[i].body);
-				node.children[i].parentNode = node;
-				$scope.initPlotTree(node.children[i]);
-			}
-		};
-		$scope.initPlotTree($scope.plotTree);
-		
+	$scope.initNovelData = function() {
+		novelData.set($scope.novelId);
+		flattenedPlotTreeData.set($scope.novelId);		
 	};
-
-	$scope.initNovelData(0);
+	$scope.initNovelData();
 	
 	$scope.hideTabs = false;
 	$scope.editMode = false;
@@ -180,6 +34,11 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 		$scope.showReorder = false;
 	}
 
+	$scope.toHtml = function(str) {
+		str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+		return str;
+	}
+	
 	$scope.findByProperty = function(arr, property, val) {
 		var i;
 		for(i = 0; i < arr.length; i++) {
@@ -191,7 +50,9 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 	}
 }])
 
-.controller('novelCtrl', function($scope) {		
+.controller('novelCtrl', ['$scope', 'novelData', function($scope, novelData) {		
+	$scope.novel = novelData.get();
+
 	$scope.genreOptions = [
 		"Fantasy", 
 		"Action",
@@ -224,30 +85,31 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 	$scope.addChapter = function() {
 		
 	};
-})
+}])
    
 .controller('plotBuilderCtrl', function($scope) {			
-	$scope.addPane = function(node) {
-		console.log(node);
+
+})
+
+.controller('plotNodeEditCtrl', ['$scope', '$stateParams', 'flattenedPlotTreeData', function($scope, $stateParams, flattenedPlotTreeData) {
+	$scope.flattenedPlotTree = flattenedPlotTreeData.get();
+	$scope.plotNode = $scope.flattenedPlotTree[$stateParams.nodeId];
+	
+	$scope.startEditMode();
+	
+	$scope.addChild = function() {
+
 	};
 	
-	$scope.toggleReorder = function(node) {
-		node.showReorder=!node.showReorder;
+	$scope.toggleReorder = function() {
+		$scope.showReorder=!$scope.showReorder;
 	};
 	
-	$scope.movePane = function(node, fromIndex, toIndex) {
-		//console.log(node.parentNode); console.log(node);
+	$scope.moveChild = function(node, fromIndex, toIndex) {
 		node.parentNode.children.splice(fromIndex, 1);
 		node.parentNode.children.splice(toIndex, 0, node);
 	};
-})
-
-.controller('plotNodeEditCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {
-	$scope.plotNode = $scope.flattenedPlotTree[$stateParams.nodeId];
 	
-	
-	
-	$scope.startEditMode();
 }])
    
 .controller('characterBuilderCtrl', function($scope) {
@@ -283,7 +145,7 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 })
    
 .controller('oneSentenceDescriptionBuilderCtrl', function($scope) {
-	alert($scope.$parent.plotTree.id);
+	
 })
 
 .controller('chapterCtrl', ['$scope', '$stateParams', function($scope, $stateParams) {

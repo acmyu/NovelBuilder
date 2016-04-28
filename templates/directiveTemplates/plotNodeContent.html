@@ -6,8 +6,8 @@
 			onClick="if(event.stopPropagation){event.stopPropagation();}event.cancelBubble=true;">
 		</i>
 		
-		<i class='icon ion-chevron-down pull-right' ng-show="$pane.isExpanded()"></i>
-		<i class='icon ion-chevron-right pull-right' ng-hide="$pane.isExpanded() || node.children.length==0"></i>
+		<i class='icon ion-chevron-down pull-right' ng-show="$pane.isExpanded() && node.childrenId.length!=0"></i>
+		<i class='icon ion-chevron-right pull-right' ng-hide="$pane.isExpanded() || node.childrenId.length==0"></i>
 	</div>
 </div>
 <div class="item row no-border body-text">

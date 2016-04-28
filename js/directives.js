@@ -46,55 +46,42 @@ angular.module('app.directives', [])
       restrict: "E",
       replace: true,
       scope: {
-          children: '='
+          childrenid: '='
       },
-      template: "<plot-child-node ng-repeat='node in children' node='node'></plot-child-node>"
+      template: "<plot-child-node ng-repeat='nodeid in childrenid' nodeid='nodeid'></plot-child-node>"
   }
 })
 
-.directive('plotChildNode', function ($compile) {
+.directive('plotChildNode', ['$compile', 'flattenedPlotTreeData', function ($compile, flattenedPlotTreeData) {
   return {
       restrict: "E",
       replace: true,
       scope: {
-          node: '='
+          nodeid: '='
       },
       template: "<div></div>",
-      link: function (scope, element, attrs) {
-		  scope.paneOpen = false;
-		  scope.togglePane = function() { 
-			scope.paneOpen = !scope.paneOpen;
-		  }
+      link: function (scope, element, attrs) {		  
+		  var flattenedPlotTree = flattenedPlotTreeData.get();
+		  scope.node = flattenedPlotTree[scope.nodeid];
 		  
-          if (angular.isArray(scope.node.children)) {
-			  var content = "<v-pane ng-disabled='node.children.length==0'>" +
+          if (angular.isArray(scope.node.childrenId)) {
+			  var content = "<v-pane>" +
 								"<v-pane-header>" +
 									"<plot-node-content></plot-node-content>" +
 								"</v-pane-header>" +
-									(scope.node.children.length==0 ? 
+									(scope.node.childrenId.length==0 ? 
 										"<v-pane-content></v-pane-content>" : 
 										"<v-pane-content><v-accordion>" +
-											"<plot-children children='node.children'></plot-children>" +
+											"<plot-children childrenid='node.childrenId'></plot-children>" +
 										"</v-accordion></v-pane-content>"
 									) +
 							"</v-pane>";
               element.append(content);
               $compile(element.contents())(scope)
           }
-		  
-		  
-		  scope.addPane = function(currNode) {
-			  scope.$parent.addPane(currNode);
-		  };
-		  scope.toggleReorder = function(currNode) {
-			  scope.$parent.toggleReorder(currNode);
-		  };
-		  scope.movePane = function(node, fromIndex, toIndex) {
-			  scope.$parent.movePane(node, fromIndex, toIndex);
-		  };
       }
   }
-})
+}])
 
 .directive('plotNodeContent', function ($compile) {
   return {
@@ -114,8 +101,8 @@ angular.module('app.directives', [])
 
 .directive('paneButtons', function () {
   return {
-	  template: "<div><button class='button button-clear' ng-click='addPane(node)'> <i class='icon ion-plus'></i> </button>" +
-				"<button class='button button-clear' ng-hide='node.children.length==0'> Select</button>" + 
-				"<button class='button button-clear' ng-hide='node.children.length==0' ng-click='$accordion.collapseAll(); toggleReorder(node)'> Reorder </button></div>"
+	  template: "<div><button class='button button-clear' ng-click='addChild()'> <i class='icon ion-plus'></i> </button>" +
+				"<button class='button button-clear'> Select</button>" + 
+				"<button class='button button-clear' ng-click='toggleReorder()'> Reorder </button></div>"
   }
 })
