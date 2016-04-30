@@ -1,7 +1,7 @@
 angular.module('app.controllers', ['ionic', 'ui.router'])
 
 
-.controller('mainCtrl', ['$scope', '$state', 'novelData', 'flattenedPlotTreeData', function($scope, $state, novelData, flattenedPlotTreeData) {		
+.controller('mainCtrl', ['$scope', '$state', '$ionicHistory', 'novelData', 'flattenedPlotTreeData', function($scope, $state, $ionicHistory, novelData, flattenedPlotTreeData) {		
 	$scope.novelId = 0;
 
 	$scope.initNovelData = function() {
@@ -9,7 +9,7 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 		flattenedPlotTreeData.set($scope.novelId);		
 	};
 	$scope.initNovelData();
-	
+
 	$scope.hideTabs = false;
 	$scope.editMode = false;
 	$scope.showReorder = false;
@@ -29,7 +29,9 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 		$scope.showReorder = true;
 	}
 	$scope.endEditMode = function() {
-		$scope.hideTabs = false;
+		if($ionicHistory.backView().stateName!='tabsController.plotNodeEdit'){
+			$scope.hideTabs = false;
+		}
 		$scope.editMode = false;
 		$scope.showReorder = false;
 	}
@@ -96,18 +98,22 @@ angular.module('app.controllers', ['ionic', 'ui.router'])
 	$scope.plotNode = $scope.flattenedPlotTree[$stateParams.nodeId];
 	
 	$scope.startEditMode();
+	$scope.showReorder = false;	
 	
 	$scope.addChild = function() {
 
 	};
 	
-	$scope.toggleReorder = function() {
-		$scope.showReorder=!$scope.showReorder;
+	$scope.startReorder = function() {
+		$scope.showReorder=true;
+	};
+	$scope.endReorder = function() {
+		$scope.showReorder=false;
 	};
 	
-	$scope.moveChild = function(node, fromIndex, toIndex) {
-		node.parentNode.children.splice(fromIndex, 1);
-		node.parentNode.children.splice(toIndex, 0, node);
+	$scope.moveChild = function(childId, fromIndex, toIndex) {
+		$scope.plotNode.childrenId.splice(fromIndex, 1);
+		$scope.plotNode.childrenId.splice(toIndex, 0, childId);
 	};
 	
 }])

@@ -8,9 +8,65 @@ angular.module('app.services', [])
 
 }])
 
-.factory('novelData', function() {
+.factory('databaseManager', [function() {
+	var db;
+	function openDB() {
+		db = window.sqlitePlugin.openDatabase({name: 'my.db', location: 'default'}, 
+		function() {
+			alert("OPEN success");
+		}, 
+		function(error) {
+			alert('OPEN error');
+		});
+	}
+	function initDB() {
+		db.sqlBatch([
+		  'CREATE TABLE IF NOT EXISTS MyTable (SampleColumn)',
+		  'CREATE TABLE IF NOT EXISTS MyTable2 (SampleColumn)',
+		  'CREATE TABLE IF NOT EXISTS MyTable3 (SampleColumn)',
+		], function() {
+			alert('CREATE success');
+		}, function(error) {
+			alert('CREATE error: ' + error.message);
+		});
+		
+		var firstrun = window.localStorage.getItem("firstrunDB");
+		if ( firstrun == null ) {
+			window.localStorage.setItem("firstrunDB", "1");
+			alert("firstrun");
+		}
+		else {
+			alert("not firstrun");
+		}
+
+	}
+	function resetDB() {
+		db.sqlBatch([
+		  'DROP TABLE IF EXISTS MyTable',
+		  'DROP TABLE IF EXISTS MyTable2',
+		  'DROP TABLE IF EXISTS MyTable3',
+		], function() {
+			alert('DROP success');
+		}, function(error) {
+			alert('DROP error: ' + error.message);
+		});
+		
+		window.localStorage.removeItem("firstrunDB");
+	}
+
+	return {
+		openDB: openDB,
+		initDB: initDB,
+		resetDB: resetDB
+	}
+
+}])
+
+
+.factory('novelData', [function() {
 	var novel = {};
 	function set(novelId) {
+
 		novel = {
 			title: "My Novel",
 			cover: "img/alicecover.jpg",
@@ -55,7 +111,7 @@ angular.module('app.services', [])
 		get: get
 	}
 
-})
+}])
 
 
 .factory('flattenedPlotTreeData', function() {
@@ -116,10 +172,14 @@ angular.module('app.services', [])
 	function get() {
 		return flattenedPlotTree;
 	}
-
+	function getNode(id) {
+		return flattenedPlotTree[id];
+	}
+	
 	return {
 		set: set,
-		get: get
+		get: get,
+		getNode: getNode
 	}
 
 })

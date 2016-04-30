@@ -1,9 +1,10 @@
 <ion-view title="{{plotNode.title}}" id="page7">
 	<ion-nav-buttons side="right">
-		<button class='button button-clear pull-right' ui-sref='tabsController.oneSentenceDescriptionBuilder' > <i class='icon ion-wrench'></i> </button>
+		<button class='button button-clear' ui-sref='tabsController.oneSentenceDescriptionBuilder' > <i class='icon ion-wrench'></i> </button>
+		<button class='button button-clear pull-right' ui-sref='tabsController.plotBuilder' ng-click="endEditMode(); hideTabs=false"> <i class='icon ion-ios-snowy'></i> </button>
 	</ion-nav-buttons>
 	
-    <ion-content scroll="false" padding="true" class="has-header">
+    <ion-content padding="true" class="has-header">
         <form class="list">
             <label class="item item-input">
                 <input type="text" placeholder="Title"
@@ -20,6 +21,31 @@
 				</textarea>
 
         </form>
+		
+		<div class="item row no-border">
+			<div class="col pull-right">
+				<div ng-show='showReorder || showSelect'>
+					<button class='button button-clear' ng-click='endReorder(); endSelect()'> Done </button>
+				</div>
+				<div ng-hide='showReorder || showSelect' class='pull-right'>
+					<button class='button button-clear' ng-click='addChild()'> <i class='icon ion-plus'></i> </button>
+					<button class='button button-clear' ng-show="plotNode.childrenId.length!=0" ng-click='startSelect()'> Select </button>
+					<button class='button button-clear' ng-show="plotNode.childrenId.length!=0" ng-click='startReorder()'> Reorder </button>
+				</div>
+			</div>
+		</div>
+		
+		<ion-list show-reorder="showReorder">
+			<ion-item ng-repeat="childid in plotNode.childrenId" ui-sref="tabsController.plotNodeEdit({nodeId: childid})" class="no-right-padding">
+				{{ flattenedPlotTree[childid].title }}
+				
+				<i class='icon ion-chevron-right pull-right'></i>
+				
+				<!--<ion-option-button class="button-assertive" ng-click="onChildDelete(flattenedPlotTree[childid])">Delete</ion-option-button>-->
+
+				<ion-reorder-button class="ion-navicon" on-reorder="moveChild(childid, $fromIndex, $toIndex)"></ion-reorder-button>
+			</ion-item>
+        </ion-list>
 		
     </ion-content>
 </ion-view>

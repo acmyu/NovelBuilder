@@ -60,9 +60,8 @@ angular.module('app.directives', [])
           nodeid: '='
       },
       template: "<div></div>",
-      link: function (scope, element, attrs) {		  
-		  var flattenedPlotTree = flattenedPlotTreeData.get();
-		  scope.node = flattenedPlotTree[scope.nodeid];
+      link: function (scope, element, attrs) {
+		  scope.node = flattenedPlotTreeData.getNode(scope.nodeid);
 		  
           if (angular.isArray(scope.node.childrenId)) {
 			  var content = "<v-pane>" +
@@ -96,13 +95,5 @@ angular.module('app.directives', [])
     link: function (scope, iElement) {
       iElement.off('keydown');
     }
-  }
-})
-
-.directive('paneButtons', function () {
-  return {
-	  template: "<div><button class='button button-clear' ng-click='addChild()'> <i class='icon ion-plus'></i> </button>" +
-				"<button class='button button-clear'> Select</button>" + 
-				"<button class='button button-clear' ng-click='toggleReorder()'> Reorder </button></div>"
   }
 })
